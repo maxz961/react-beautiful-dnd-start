@@ -1,7 +1,11 @@
-import { createRow, createTicket, updateRows } from "../actions/dashboard";
+import {
+  createColumn,
+  createTicket,
+  updateColumns,
+} from "../actions/dashboard";
 
 const initialState = {
-  rows: [
+  columns: [
     {
       id: "1",
       title: "TODO",
@@ -27,13 +31,13 @@ const initialState = {
 
 const dashboardReducer = (state = initialState, action) => {
   switch (action.type) {
-    case createRow.type:
+    case createColumn.type:
       return {
         ...state,
-        rows: [...state.rows, { ...action.payload, tickets: [] }],
+        columns: [...state.columns, { ...action.payload, tickets: [] }],
       };
     case createTicket.type:
-      const newRows = state.rows.map((row) => {
+      const newColumns = state.columns.map((row) => {
         if (row.id === action.payload.id) {
           return {
             ...row,
@@ -45,13 +49,12 @@ const dashboardReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        rows: newRows,
+        columns: newColumns,
       };
-    case updateRows.type:
-      console.log("TTTTTT", action.payload);
+    case updateColumns.type:
       return {
         ...state,
-        rows: action.payload,
+        columns: action.payload,
       };
     default:
       return state;

@@ -1,62 +1,60 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { useSelector, useDispatch } from "react-redux";
-import { updateRows } from "../store/actions/dashboard";
+import { updateColumns } from "../store/actions/dashboard";
+import Column from "./Column";
+import AddColumn from "./AddColumn";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import Row from "./Row";
-import AddNewRow from "./AddNewRow";
 
 const ID_BOARD = "id_board";
 
 const Board = () => {
   const dispatch = useDispatch();
-  const { rows } = useSelector((state) => state.dashboard);
+  const { columns } = useSelector((state) => state.dashboard);
 
-  const getRows = (id) => [...rows.find((row) => row.id === id).tickets];
+  const getRowTickets = (id) => [
+    ...columns.find((row) => row.id === id).tickets,
+  ];
 
   const onDragEnd = ({ source, destination }) => {
     if (!destination) return;
-    if (destination.droppableId === ID_BOARD) {
-      const copyRows = rows.splice();
-      const [removed] = copyRows.splice(source.index, 1);
 
-      const newRows = [
-        ...copyRows.slice(0, destination.index),
+    if (destination.droppableId === ID_BOARD) {
+      const cloneColumn = [...columns];
+      const [removed] = cloneColumn.splice(source.index, 1);
+      const newColumns = [
+        ...cloneColumn.slice(0, destination.index),
         removed,
-        ...copyRows.slice(destination.index),
+        ...cloneColumn.slice(destination.index),
       ];
 
-      dispatch(updateRows(newRows));
-      return;
+      dispatch(updateColumns(newColumns));
     } else if (source.droppableId !== destination.droppableId) {
-      const sourTickets = getRows(source.droppableId);
-      const destTickets = getRows(destination.droppableId);
+      const sourceTickets = getRowTickets(source.droppableId);
+      const destTickets = getRowTickets(destination.droppableId);
 
-      const [removed] = sourTickets.splice(source.index, 1);
+      const [removed] = sourceTickets.splice(source.index, 1);
       destTickets.splice(destination.index, 0, removed);
 
-      const newRows = rows.map((row) => {
+      const newColumns = columns.map((row) => {
         if (row.id === source.droppableId)
-          return { ...row, tickets: sourTickets };
+          return { ...row, tickets: sourceTickets };
         if (row.id === destination.droppableId)
           return { ...row, tickets: destTickets };
 
         return row;
       });
 
-      dispatch(updateRows(newRows));
+      dispatch(updateColumns(newColumns));
     } else {
-      const tickets = getRows(source.droppableId);
-
+      const tickets = getRowTickets(source.droppableId);
       const [removed] = tickets.splice(source.index, 1);
       tickets.splice(destination.index, 0, removed);
-
-      const newRows = rows.map((row) => {
+      const newColumns = columns.map((row) => {
         if (row.id === source.droppableId) return { ...row, tickets };
         return row;
       });
-
-      dispatch(updateRows(newRows));
+      dispatch(updateColumns(newColumns));
     }
   };
 
@@ -65,11 +63,11 @@ const Board = () => {
       <Droppable droppableId={ID_BOARD} direction="horizontal" type="list">
         {(provided) => (
           <BoardContainer ref={provided.innerRef} {...provided.droppableProps}>
-            {rows.map((row, index) => (
-              <Row key={row.id} {...row} index={index} />
+            {columns.map((row, index) => (
+              <Column key={row.id} {...row} index={index} />
             ))}
             {provided.placeholder}
-            <AddNewRow />
+            <AddColumn />
           </BoardContainer>
         )}
       </Droppable>

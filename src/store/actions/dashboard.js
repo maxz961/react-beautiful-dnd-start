@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit";
 
-const createRow = createAction("CREATE_ROW");
+const createColumn = createAction("CREATE_COLUMN");
 const createTicket = createAction("CREATE_TICKET");
-const updateRows = createAction("UPDATE_ROWS");
+const updateColumns = createAction("UPDATE_COLUMNS");
 
-export { createRow, createTicket, updateRows };
+export { createColumn, createTicket, updateColumns };

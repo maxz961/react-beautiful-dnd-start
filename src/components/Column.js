@@ -1,18 +1,17 @@
 import React from "react";
 import styled from "@emotion/styled";
-
-import AddNewTicket from "./AddNewTicket";
+import AddTicket from "./AddTicket";
 import Ticket from "./Ticket";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 
-const Row = ({ id, title, tickets, index }) => {
+const Column = ({ id, title, tickets, index }) => {
   return (
     <Draggable draggableId={id} index={index}>
-      {(provided) => (
-        <RowContainer
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
+      {(provied) => (
+        <ColumnContainer
+          ref={provied.innerRef}
+          {...provied.draggableProps}
+          {...provied.dragHandleProps}
         >
           <WrapContent>
             <Header>{title}</Header>
@@ -26,20 +25,20 @@ const Row = ({ id, title, tickets, index }) => {
                     <Ticket key={ticket.id} {...ticket} index={index} />
                   ))}
                   {provided.placeholder}
-                  <AddNewTicket id={id} />
+                  <AddTicket id={id} />
                 </TicketsWrap>
               )}
             </Droppable>
           </WrapContent>
-        </RowContainer>
+        </ColumnContainer>
       )}
     </Draggable>
   );
 };
 
-export default Row;
+export default Column;
 
-const RowContainer = styled.div`
+const ColumnContainer = styled.div`
   border-radius: 4px;
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid transparent;

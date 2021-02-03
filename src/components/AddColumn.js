@@ -1,25 +1,19 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createTicket } from "../store/actions/dashboard";
+import { createColumn } from "../store/actions/dashboard";
 import { v4 as uuidv4 } from "uuid";
 import styled from "@emotion/styled";
 
-const AddNewTicket = ({ id }) => {
+const AddColumn = () => {
   const dispatch = useDispatch();
-
   const [value, setValue] = useState("");
 
-  const handleAddNewTicket = () => {
+  const handleAddColumn = () => {
     if (value.trim() === "") return;
-    const newTicket = {
-      id: uuidv4(),
-      value: value.toUpperCase(),
-    };
-
     dispatch(
-      createTicket({
-        id,
-        newTicket,
+      createColumn({
+        id: uuidv4(),
+        title: value.toUpperCase(),
       })
     );
 
@@ -29,20 +23,22 @@ const AddNewTicket = ({ id }) => {
   return (
     <Container>
       <Input value={value} onChange={(e) => setValue(e.target.value)} />
-      <AddBtn onClick={handleAddNewTicket}>ADD TICKET</AddBtn>
+      <AddBtn onClick={handleAddColumn}>ADD ROW</AddBtn>
     </Container>
   );
 };
 
-export default AddNewTicket;
+export default AddColumn;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 24px;
+  min-width: 200px;
+  padding-right: 24px;
 `;
 
 const Input = styled.input`
+  max-width: 100%;
   padding: 8px;
 `;
 
