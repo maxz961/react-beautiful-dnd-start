@@ -1,21 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { Draggable } from "react-beautiful-dnd";
 
 const Ticket = ({ id, value, index }) => {
-  return (
-    <Draggable draggableId={id} index={index}>
-      {(provided) => (
-        <TicketContainer
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-        >
-          {value}
-        </TicketContainer>
-      )}
-    </Draggable>
-  );
+  return <TicketContainer>{value}</TicketContainer>;
 };
 
 export default Ticket;

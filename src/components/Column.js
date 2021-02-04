@@ -2,37 +2,20 @@ import React from "react";
 import styled from "@emotion/styled";
 import AddTicket from "./AddTicket";
 import Ticket from "./Ticket";
-import { Droppable, Draggable } from "react-beautiful-dnd";
 
 const Column = ({ id, title, tickets, index }) => {
   return (
-    <Draggable draggableId={id} index={index}>
-      {(provided) => (
-        <ColumnContainer
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-        >
-          <WrapContent>
-            <Header>{title}</Header>
-            <Droppable droppableId={id}>
-              {(provided) => (
-                <TicketsWrap
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                >
-                  {tickets.map((ticket, index) => (
-                    <Ticket key={ticket.id} {...ticket} index={index} />
-                  ))}
-                  {provided.placeholder}
-                  <AddTicket id={id} />
-                </TicketsWrap>
-              )}
-            </Droppable>
-          </WrapContent>
-        </ColumnContainer>
-      )}
-    </Draggable>
+    <ColumnContainer>
+      <WrapContent>
+        <Header>{title}</Header>
+        <TicketsWrap>
+          {tickets.map((ticket, index) => (
+            <Ticket key={ticket.id} {...ticket} index={index} />
+          ))}
+          <AddTicket id={id} />
+        </TicketsWrap>
+      </WrapContent>
+    </ColumnContainer>
   );
 };
 
