@@ -40,6 +40,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 24px;
+  &:first-of-type {
+    margin-top: 0;
+  }
 `;
 
 const Input = styled.input`
