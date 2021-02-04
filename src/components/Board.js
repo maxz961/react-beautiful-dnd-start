@@ -12,48 +12,48 @@ const Board = () => {
   const dispatch = useDispatch();
   const { columns } = useSelector((state) => state.dashboard);
 
-  const getRowTickets = (id) => [
-    ...columns.find((row) => row.id === id).tickets,
+  const getTickets = (id) => [
+    ...columns.find((column) => column.id === id).tickets,
   ];
 
   const onDragEnd = ({ source, destination }) => {
     if (!destination) return;
-
     if (destination.droppableId === ID_BOARD) {
-      const cloneColumn = [...columns];
-      const [removed] = cloneColumn.splice(source.index, 1);
+      const cloneColumns = [...columns];
+      const [removed] = cloneColumns.splice(source.index, 1);
       const newColumns = [
-        ...cloneColumn.slice(0, destination.index),
+        ...cloneColumns.slice(0, destination.index),
         removed,
-        ...cloneColumn.slice(destination.index),
+        ...cloneColumns.slice(destination.index),
       ];
 
       dispatch(updateColumns(newColumns));
-    } else if (source.droppableId !== destination.droppableId) {
-      const sourceTickets = getRowTickets(source.droppableId);
-      const destTickets = getRowTickets(destination.droppableId);
+    } else if (destination.droppableId !== source.droppableId) {
+      const sourceTickets = getTickets(source.droppableId);
+      const destTickets = getTickets(destination.droppableId);
 
       const [removed] = sourceTickets.splice(source.index, 1);
       destTickets.splice(destination.index, 0, removed);
 
-      const newColumns = columns.map((row) => {
-        if (row.id === source.droppableId)
-          return { ...row, tickets: sourceTickets };
-        if (row.id === destination.droppableId)
-          return { ...row, tickets: destTickets };
-
-        return row;
+      const newColumns = columns.map((column) => {
+        if (column.id === source.droppableId)
+          return { ...column, tickets: sourceTickets };
+        if (column.id === destination.droppableId)
+          return { ...column, tickets: destTickets };
+        return column;
       });
 
       dispatch(updateColumns(newColumns));
     } else {
-      const tickets = getRowTickets(source.droppableId);
+      const tickets = getTickets(source.droppableId);
       const [removed] = tickets.splice(source.index, 1);
       tickets.splice(destination.index, 0, removed);
-      const newColumns = columns.map((row) => {
-        if (row.id === source.droppableId) return { ...row, tickets };
-        return row;
+
+      const newColumns = columns.map((column) => {
+        if (column.id === source.droppableId) return { ...column, tickets };
+        return column;
       });
+
       dispatch(updateColumns(newColumns));
     }
   };

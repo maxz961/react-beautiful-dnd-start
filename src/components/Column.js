@@ -7,11 +7,11 @@ import { Droppable, Draggable } from "react-beautiful-dnd";
 const Column = ({ id, title, tickets, index }) => {
   return (
     <Draggable draggableId={id} index={index}>
-      {(provied) => (
+      {(provided) => (
         <ColumnContainer
-          ref={provied.innerRef}
-          {...provied.draggableProps}
-          {...provied.dragHandleProps}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
         >
           <WrapContent>
             <Header>{title}</Header>
